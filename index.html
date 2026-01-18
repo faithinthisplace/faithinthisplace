@@ -502,18 +502,20 @@
                     return;
                 }
 
-                const videos = Array.from(entries).slice(0, MAX_VIDEOS).map(entry => {
+                const videos = Array.from(entries).slice(0, MAX_VIDEOS * 2).map(entry => {
                     const videoId = entry.querySelector('videoId').textContent;
                     const title = entry.querySelector('title').textContent;
                     const published = entry.querySelector('published').textContent;
+                    const link = entry.querySelector('link').getAttribute('href');
                     
                     return {
                         id: videoId,
                         title: title,
                         published: new Date(published),
-                        thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+                        thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+                        isShort: link.includes('/shorts/')
                     };
-                });
+                }).filter(video => !video.isShort).slice(0, MAX_VIDEOS);
 
                 displayVideos(videos);
             } catch (error) {
