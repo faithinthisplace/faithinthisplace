@@ -484,8 +484,8 @@
         // Fetch YouTube videos
         async function loadYouTubeVideos() {
             try {
-                // Using YouTube's RSS feed (no API key needed)
-                const response = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`);
+                // Using a CORS proxy to fetch YouTube RSS feed
+                const response = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`)}`);
                 
                 if (!response.ok) {
                     throw new Error('No videos found');
@@ -502,12 +502,18 @@
                     return;
                 }
 
-                const videos = Array.from(entries).slice(0, MAX_VIDEOS).map(entry => ({
-                    id: entry.querySelector('videoId').textContent,
-                    title: entry.querySelector('title').textContent,
-                    published: new Date(entry.querySelector('published').textContent),
-                    thumbnail: `https://i.ytimg.com/vi/${entry.querySelector('videoId').textContent}/hqdefault.jpg`
-                }));
+                const videos = Array.from(entries).slice(0, MAX_VIDEOS).map(entry => {
+                    const videoId = entry.querySelector('videoId').textContent;
+                    const title = entry.querySelector('title').textContent;
+                    const published = entry.querySelector('published').textContent;
+                    
+                    return {
+                        id: videoId,
+                        title: title,
+                        published: new Date(published),
+                        thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+                    };
+                });
 
                 displayVideos(videos);
             } catch (error) {
