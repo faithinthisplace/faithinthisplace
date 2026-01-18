@@ -618,10 +618,10 @@
 
         function loadFallbackPlan() {
             const fallbackPlan = {
-                1:"Gen 1-3", 2:"Gen 4-7", 3:"Gen 8-11", 4:"Job 1-5", 5:"Job 6-9",
+                1:"Genesis 1-3", 2:"Genesis 4-7", 3:"Genesis 8-11", 4:"Job 1-5", 5:"Job 6-9",
                 6:"Job 10-13", 7:"Job 14-16", 8:"Job 17-20", 9:"Job 21-23", 10:"Job 24-28",
                 11:"Job 29-31", 12:"Job 32-34", 13:"Job 35-37", 14:"Job 38-39", 15:"Job 40-42",
-                16:"Gen 12-15", 17:"Gen 16-18", 18:"Gen 19-21"
+                16:"Genesis 12-15", 17:"Genesis 16-18", 18:"Genesis 19-21", 19:"Genesis 22-24", 20:"Genesis 25-26"
             };
             
             const now = new Date();
@@ -630,12 +630,14 @@
             const oneDay = 1000 * 60 * 60 * 24;
             const dayOfYear = Math.floor(diff / oneDay);
             
-            const todayReading = fallbackPlan[dayOfYear] || "Gen 1-3";
+            const todayReading = fallbackPlan[dayOfYear] || "Genesis 1-3";
             
             document.getElementById('day-number').textContent = `Day ${dayOfYear}`;
             document.getElementById('reading-text').textContent = todayReading;
             
-            const bibleGatewayUrl = `https://www.biblegateway.com/passage/?search=${encodeURIComponent(todayReading)}&version=NIV`;
+            // Format for Bible Gateway - it needs full book names and proper formatting
+            const formattedReading = todayReading.replace(/;/g, ',');
+            const bibleGatewayUrl = `https://www.biblegateway.com/passage/?search=${encodeURIComponent(formattedReading)}&version=NIV`;
             document.getElementById('bible-link').href = bibleGatewayUrl;
         }
 
