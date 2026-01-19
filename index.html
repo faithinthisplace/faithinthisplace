@@ -538,10 +538,7 @@
             document.getElementById('reading-text').textContent = todayReading;
             
             const link = document.getElementById('bible-link');
-            link.onclick = function(e) {
-                e.preventDefault();
-                window.open(`https://www.biblegateway.com/passage/?search=${encodeURIComponent(todayReading)}&version=ESV`, '_blank');
-            };
+            link.href = `https://www.biblegateway.com/passage/?search=${encodeURIComponent(todayReading)}&version=NIV`;
         }
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
